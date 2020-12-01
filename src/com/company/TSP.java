@@ -103,4 +103,59 @@ public class TSP {
         System.out.println("Does it work? " + accurate);
 
     }
+
+    public static ArrayList<int[]> permutations = new ArrayList<int[]>();
+
+    //O(n!)
+    public static int[] TspBrute(float[][] arr, int size){
+        int[] bestTour = new int[size];
+
+        int[] nums = new int[size];
+        for (int i = 0; i < size; ++i){
+            nums[i] = i;
+        }
+        permute(nums, 1, size-1);
+
+        float minSum = Integer.MAX_VALUE;
+        float x = 0;
+
+        for (int i = 0; i < permutations.size(); ++i){
+            for (int j = 0; j < size-1; ++j){
+                x += arr[permutations.get(i)[j]][permutations.get(i)[j+1]];
+            }
+            x += arr[permutations.get(i)[size-1]][0];
+            if (x < minSum){
+                minSum = x;
+                bestTour = permutations.get(i);
+            }
+            x = 0;
+        }
+
+        System.out.println(minSum);
+
+
+        permutations.clear();
+        return bestTour;
+    }
+
+    public static void permute(int[] nums, int l, int r){
+        if (l == r){
+            permutations.add(nums.clone());
+        }
+
+        for (int i = l; i <= r; ++i){
+            nums = swap(nums, l, i);
+            permute(nums, l+1, r);
+            nums = swap(nums, l, i);
+        }
+    }
+
+    public static int[] swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+        return nums;
+    }
+
+
 }
