@@ -58,11 +58,15 @@ public class Generate {
         return cost;
     }
 
+    public static Integer[] vertices;
+    public static float[][] coord;
+    public static float adjVCost;
     public static float[][] generateRandomCircularGraphCostMatrix(int size, int radius){
         float[][] cost = new float[size][size];
-        float[][] coord = new float[size][2];
-        Integer[] vertices = new Integer[size];
+        coord = new float[size][2];
         float result;
+        vertices = new Integer[size];
+        adjVCost = Integer.MAX_VALUE;
 
         // fill vertices array and then shuffle points
         for (int i = 0; i < size; ++i){
@@ -71,6 +75,7 @@ public class Generate {
         List<Integer> hold = Arrays.asList(vertices);
         Collections.shuffle(hold.subList(1, hold.size()));
         hold.toArray(vertices);
+
 
         // populate coordinates
         double stepAngle = (Math.PI * 2)/size;
@@ -85,6 +90,9 @@ public class Generate {
                 double x = Math.pow(coord[i][0] - coord[j][0],2);
                 double y = Math.pow(coord[i][1] - coord[j][1],2);
                 result = (float)(Math.sqrt(x+y));
+                if (result < adjVCost && result != 0){ // for correctness testing
+                    adjVCost = result;
+                }
                 cost[i][j] = result;
                 cost[j][i] = result;
             }

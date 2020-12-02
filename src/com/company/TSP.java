@@ -105,9 +105,11 @@ public class TSP {
     }
 
     public static ArrayList<int[]> permutations = new ArrayList<int[]>();
+    public static float bruteSum = 0;
 
     //O(n!)
     public static int[] TspBrute(float[][] arr, int size){
+        bruteSum = 0;
         int[] bestTour = new int[size];
 
         int[] nums = new int[size];
@@ -131,7 +133,7 @@ public class TSP {
             x = 0;
         }
 
-        System.out.println(minSum);
+        bruteSum = minSum;
 
 
         permutations.clear();
@@ -155,6 +157,43 @@ public class TSP {
         nums[i] = nums[j];
         nums[j] = temp;
         return nums;
+    }
+
+    public static void BruteCorrectness(){
+        for (int i = 5; i < 10; ++i){
+            float[][] arr = Generate.generateRandomCircularGraphCostMatrix(i,100);
+            System.out.printf("Test: N = %d, Expected cost: %.2f\n", i, i * Generate.adjVCost);
+            System.out.println("Sequence and coordinates");
+            for (int j = 0; j < i; ++j){
+                System.out.printf("           %d          ", Generate.vertices[j]);
+            }
+            System.out.println();
+            for (int j = 0; j < i; ++j){
+                System.out.printf("x: %6.2f y: %6.2f | ", Generate.coord[j][0], Generate.coord[j][1]);
+            }
+            System.out.println();
+            System.out.println("Cost matrix");
+            System.out.printf("     |");
+            for (int j = 0; j < i; ++j){
+                System.out.printf("    %d     |", j);
+            }
+            System.out.println();
+            for (int j = 0; j < i; ++j){
+                System.out.printf("  %d  |", j);
+                for (int k = 0; k < i; ++k){
+                    System.out.printf("  %6.2f  |", arr[j][k]);
+                }
+                System.out.println();
+            }
+            System.out.println("Running Brute Force algorithm...");
+            int[] result = TspBrute(arr,i);
+            System.out.printf("Found sequence: ");
+            for (int j = 0; j < i; ++j){
+                System.out.printf("%d ", result[j]);
+            }
+            System.out.printf("  Cost of path: %.2f\n\n", bruteSum);
+
+        }
     }
 
 
