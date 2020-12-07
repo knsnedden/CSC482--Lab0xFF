@@ -31,9 +31,8 @@ public class TSP {
                     result[counter] = j;
                 }
             }
-
             ++j;
-            // look at all paths from i
+
             if (j == n){
                 greedySum += min;
                 min = Integer.MAX_VALUE;
